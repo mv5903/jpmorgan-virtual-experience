@@ -1,75 +1,29 @@
-From 5cd22402f50e22b3400e45a018af8ff9e4c82196 Mon Sep 17 00:00:00 2001
+From f1b997d9035be443bbfc16df57b861df6723e209 Mon Sep 17 00:00:00 2001
 From: Matthew Vandenberg <mv5903@gmail.com>
-Date: Fri, 15 Oct 2021 10:35:48 -0700
+Date: Fri, 15 Oct 2021 13:42:12 -0700
 Subject: [PATCH] Create Patch File
 
 ---
- client3.py     | 8 +++++---
- client_test.py | 6 +++++-
- 2 files changed, 10 insertions(+), 4 deletions(-)
+ repos/JPMC-tech-task-2     | 1 +
+ repos/JPMC-tech-task-2-PY3 | 1 +
+ 2 files changed, 2 insertions(+)
+ create mode 160000 repos/JPMC-tech-task-2
+ create mode 160000 repos/JPMC-tech-task-2-PY3
 
-diff --git a/client3.py b/client3.py
-index f1771c3..38785c1 100644
---- a/client3.py
-+++ b/client3.py
-@@ -35,14 +35,14 @@ def getDataPoint(quote):
- 	stock = quote['stock']
- 	bid_price = float(quote['top_bid']['price'])
- 	ask_price = float(quote['top_ask']['price'])
--	price = bid_price
-+	price = (bid_price + ask_price)/2
- 	return stock, bid_price, ask_price, price
- 
- def getRatio(price_a, price_b):
- 	""" Get ratio of price_a and price_b """
- 	""" ------------- Update this function ------------- """
- 	""" Also create some unit tests for this function in client_test.py """
--	return 1
-+	return price_a/price_b
- 
- # Main
- if __name__ == "__main__":
-@@ -52,8 +52,10 @@ if __name__ == "__main__":
- 		quotes = json.loads(urllib.request.urlopen(QUERY.format(random.random())).read())
- 
- 		""" ----------- Update to get the ratio --------------- """
-+		prices = {}
- 		for quote in quotes:
- 			stock, bid_price, ask_price, price = getDataPoint(quote)
-+			prices[stock] = price
- 			print ("Quoted %s at (bid:%s, ask:%s, price:%s)" % (stock, bid_price, ask_price, price))
- 
--		print ("Ratio %s" % getRatio(price, price))
-+		print ("Ratio %s" % getRatio(prices['ABC'], prices['DEF']))
-diff --git a/client_test.py b/client_test.py
-index af2bf26..2277ddf 100644
---- a/client_test.py
-+++ b/client_test.py
-@@ -1,5 +1,5 @@
- import unittest
--from client3 import getDataPoint
-+from client3 import getDataPoint, getRatio
- 
- class ClientTest(unittest.TestCase):
-   def test_getDataPoint_calculatePrice(self):
-@@ -8,6 +8,8 @@ class ClientTest(unittest.TestCase):
-       {'top_ask': {'price': 121.68, 'size': 4}, 'timestamp': '2019-02-11 22:06:30.572453', 'top_bid': {'price': 117.87, 'size': 81}, 'id': '0.109974697771', 'stock': 'DEF'}
-     ]
-     """ ------------ Add the assertion below ------------ """
-+    for quote in quotes:
-+      self.assertEqual(getDataPoint(quote), (quote['stock'], quote['top_bid']['price'], quote['top_ask']['price'], (quote['top_bid']['price'] + quote['top_ask']['price'])/2))
- 
-   def test_getDataPoint_calculatePriceBidGreaterThanAsk(self):
-     quotes = [
-@@ -15,6 +17,8 @@ class ClientTest(unittest.TestCase):
-       {'top_ask': {'price': 121.68, 'size': 4}, 'timestamp': '2019-02-11 22:06:30.572453', 'top_bid': {'price': 117.87, 'size': 81}, 'id': '0.109974697771', 'stock': 'DEF'}
-     ]
-     """ ------------ Add the assertion below ------------ """
-+    for quote in quotes:
-+      self.assertEqual(getDataPoint(quote), (quote['stock'], quote['top_bid']['price'], quote['top_ask']['price'], (quote['top_bid']['price'] + quote['top_ask']['price'])/2))
- 
- 
-   """ ------------ Add more unit tests ------------ """
+diff --git a/repos/JPMC-tech-task-2 b/repos/JPMC-tech-task-2
+new file mode 160000
+index 0000000..a2a5e7b
+--- /dev/null
++++ b/repos/JPMC-tech-task-2
+@@ -0,0 +1 @@
++Subproject commit a2a5e7b9e9bbf08afacc5e790ea800662dc38e4c
+diff --git a/repos/JPMC-tech-task-2-PY3 b/repos/JPMC-tech-task-2-PY3
+new file mode 160000
+index 0000000..cc8ffba
+--- /dev/null
++++ b/repos/JPMC-tech-task-2-PY3
+@@ -0,0 +1 @@
++Subproject commit cc8ffba90325f7f163d7a996fc5c5754ef8149ba
 -- 
 2.28.0.windows.1
 
